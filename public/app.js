@@ -35,7 +35,6 @@ form_count.addEventListener("submit",(e)=>{
     new_form.addEventListener("submit", (e)=> {
         e.preventDefault();
         createData(new_form);
-        randomizeData();
     });
 
 });
@@ -47,35 +46,17 @@ const createData = (form)=>{
         data.push([values[i].value,values[i+1].value]);
         names.push(values[i].value);
     }
+    console.log(names);
+    randomizeData();
+    console.log(names);
 };
 
+
+//Fisher yates algorithm / Knuth swapping algorithm
 const randomizeData = ()=>{
-    for(let i = 0; i < data.length; i++){
-        let copy = names.slice();
-        copy.splice(i,1);
-        shuffleArray(copy);
-        shuffleArray(copy);
-        shuffleArray(copy);
-        let value = copy[0];
-        for(let j = 0; j < names.length; j++){
-            if (value == names[j]){
-                names.splice(j,1);
-            }
-        }
-        console.log(data[i][0] + " bought for " + value);
-        
+    for(let pointer = 0; pointer < names.length - 1; pointer++){
+        let random_index = Math.floor(Math.random() * (data.length - pointer)) + pointer;
+        console.log(`swapping ${names[pointer]} with ${names[random_index]}`);
+        [names[pointer],names[random_index]] = [names[random_index],names[pointer]];
     }
 };
-
-const shuffleArray = (array)=>{
-    for(let i = 0; i < array.length - 1; i++){
-        const j = i + Math.floor(Math.random() * (array.length - i));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-}
-
-
-
-
-
-
