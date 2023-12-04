@@ -1,7 +1,7 @@
 const name_count = document.querySelector("#names");
 const form_count = document.querySelector(".first-form");
 const form_container_2 = document.querySelector(".form-container-2");
-let data = [];
+let data = {};
 let names = [];
 
 form_count.addEventListener("submit",(e)=>{
@@ -43,20 +43,34 @@ const createData = (form)=>{
     const inputs = form.querySelectorAll("input");
     const values = Array.from(inputs).slice(0,-1);
     for(let i = 0; i < values.length; i += 2){
-        data.push([values[i].value,values[i+1].value]);
+        // data.push([values[i].value,values[i+1].value]);
+        data[values[i].value] = {email: values[i+1].value};
         names.push(values[i].value);
     }
     console.log(names);
     randomizeData();
     console.log(names);
+    randomizeData();
+    console.log(names);
+    randomizeData();
+    addPartners();
+    console.log(names);
+    console.log(data);
 };
 
 
 //Fisher yates algorithm / Knuth swapping algorithm
 const randomizeData = ()=>{
     for(let pointer = 0; pointer < names.length - 1; pointer++){
-        let random_index = Math.floor(Math.random() * (data.length - pointer)) + pointer;
+        let random_index = Math.floor(Math.random() * (names.length - pointer)) + pointer;
         console.log(`swapping ${names[pointer]} with ${names[random_index]}`);
         [names[pointer],names[random_index]] = [names[random_index],names[pointer]];
+    }
+};
+
+const addPartners = () =>{
+    for(let i = 0; i < names.length; i++){
+        let partner_index = (i + 1) % names.length;
+        data[names[i]]["partner"] = names[partner_index];
     }
 };
