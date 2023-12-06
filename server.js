@@ -26,23 +26,22 @@ app.post('/email', (req,res) => {
     const data = req.body;
     for (const person in data) {
         const { email, partner } = data[person];
-        console.log(`Person: ${person}, Email: ${email}, Partner: ${partner}`);
-    }
 
-    const mailOptions = {
-        from: 'automatedemailwaffleed@gmail.com',
-        to: 'waleedmalik027@gmail.com',
-        subject: 'Test Email',
-        text: 'This is a test email sent using Nodemailer.',
+        const mailOptions = {
+            from: 'automatedemailwaffleed@gmail.com',
+            to: email,
+            subject: 'Secret Santa Partner',
+            text: `Hi! You have the following person for Secret Santa: ${partner}`,
+        };
+        console.log(mailOptions);
+    
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              return console.error('Error:', error);
+            }
+            console.log('Email sent:', info.response);
+        });
     };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          return console.error('Error:', error);
-        }
-        console.log('Email sent:', info.response);
-    });
-
 });
 
 app.listen(port, () => {
