@@ -1,11 +1,18 @@
 const name_count = document.querySelector("#names");
 const form_count = document.querySelector(".first-form");
+const title_container = document.querySelector(".title-container");
+const image = title_container.querySelector('img');
 const form_container_2 = document.querySelector(".form-container-2");
+const regex = /^([1-9]|[1-2]\d)$/; //TBD
+
 let data = {};
 let names = [];
 
 form_count.addEventListener("submit",async (e)=>{
     e.preventDefault();
+
+    changePage();
+    
     const new_form = document.createElement("form");
     const submit = document.createElement("input");
 
@@ -37,6 +44,14 @@ form_count.addEventListener("submit",async (e)=>{
         createData(new_form);
     });
 });
+
+const changePage = () =>{
+    name_count.style.display = 'none';
+    form_count.style.display = 'none';
+    image.style.width = '200px';
+};
+
+
 
 const createData = async (form)=>{
     const inputs = form.querySelectorAll("input");
