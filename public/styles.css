@@ -3,13 +3,24 @@ body{
 }
 
 .title-container{
+    position: relative;
     display: flex;
     justify-content: center;
     margin-top: 50px;
 }
 
-.title-container img{
+#mainImage{
     width: 400px;
+}
+
+#backImage {
+    display: none;
+    position: absolute;
+    left: 10px;
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, scale 0.3s ease-in-out;
 }
 
 .form-container-1{
@@ -27,7 +38,7 @@ body{
     border: none;
     outline: none;
     box-shadow: 3px 3px 3px black;
-    
+    transition: all 0.1s ease 0s;
 }
 
 .form-container-1 input[type="submit"]{
@@ -49,6 +60,7 @@ body{
 .form-container-1 input[type="text"]:focus{
     transform: scale(1.05);
 }
+
 .form-container-1 input[type="submit"]:hover{
     background-color: #b6b6b6;
     color:#43ec89;
@@ -56,13 +68,22 @@ body{
     transform: translateY(-4px);
 }
 
-.form-container-2{
-
+.form-container-2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.form-container-2 input[type="text"]{
+.input-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 15px; 
+    text-align: center; 
+}
+
+.input-container input{
     display: block;
-    margin: 12px auto;
+    margin: 5px auto;
     padding: 10px 0px;
     border-radius: 25px;
     font-size: 25px;
@@ -70,11 +91,16 @@ body{
     border: none;
     outline: none;
     box-shadow: 3px 3px 3px black;
+    transition: all 0.1s ease 0s;
+}
+.input-container input:focus{
+    transform: scale(1.05);
 }
 
 .form-container-2 input[type="submit"]{
     margin: 18px auto;
-    width: 80px;
+    padding: 4px 11px;
+    width: auto;
     height: 32px;
     display: block;
     border: none;
@@ -85,4 +111,35 @@ body{
     border-radius: 40px;
     cursor: pointer;
     box-shadow: 1.8px 1.8px 1.8px black;
+    transition: all 0.1s ease 0s;
 }
+
+.form-container-2 input[type="submit"]:hover{
+    background-color: #b6b6b6;
+    color:#43ec89;
+    box-shadow: 3px 3px 3px black;
+    transform: translateY(-4px);
+}
+
+  @keyframes rotateAnimation {
+    0% {
+      transform: rotate(0deg) scale(1);
+    }
+    25% {
+      transform: rotate(-5deg) scale(1.03);
+    }
+    50% {
+      transform: rotate(0deg) scale(1.08);
+    }
+    75% {
+      transform: rotate(5deg) scale(1.08);
+    }
+    100% {
+      transform: rotate(0deg) scale(1.1);
+    }
+  }
+
+  #backImage:hover {
+    animation: rotateAnimation 0.3s forwards;
+    transform: scale(1.1);
+  }
