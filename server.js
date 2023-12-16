@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
     secure: true,
     auth: {
       user: 'automatedemailwaffleed@gmail.com',
-      pass: ''
+      pass: 'wbplrludipfdpwgk'
     }
 });
 
