@@ -4,17 +4,18 @@ const title_container = document.querySelector(".title-container");
 const image = title_container.querySelector('#mainImage');
 const form_container_2 = document.querySelector(".form-container-2");
 const backImage = document.querySelector('#backImage');
+const response_container = document.querySelector('.response-container');
 
 const regex = /^([1-9]|[1-2]\d)$/; //regex for first input, we dont want too many names/emails
 
 let data = {};
 let names = [];
 
+const response = document.createElement('div');
+
 form_count.addEventListener("submit", async (e)=>{
     e.preventDefault();
 
-    
-    
     const new_form = document.createElement("form");
     changePage(new_form);
 
@@ -24,6 +25,7 @@ form_count.addEventListener("submit", async (e)=>{
     input_container.setAttribute("class","input-container");
 
     submit.setAttribute("type","submit");
+    submit.setAttribute('class',"submit");
     submit.setAttribute("value","Send Emails");
 
     
@@ -52,9 +54,20 @@ form_count.addEventListener("submit", async (e)=>{
     form_container_2.append(new_form);
     
 
-    new_form.addEventListener("submit", (e)=> {
+    new_form.addEventListener("submit", async (e)=> {
         e.preventDefault();
-        createData(input_container);
+        const status = await createData(input_container);
+        const submit = document.querySelector('.submit');
+        console.log(status);
+        if(status == 200){
+            response.innerText = "Congrats! Emails have been successfully sent";
+            response.setAttribute('class','success');
+        }else{
+            response.innerText = "Error! Emails fail to send. Please try again";
+            response.setAttribute('class','fail');
+        }
+        submit.style.pointerEvents = 'none';
+        response_container.append(response);
     });
 });
 
@@ -70,6 +83,9 @@ const changePage = (new_form) =>{
         form_count.style.display = 'block';
         image.style.width = '400px';
         backImage.style.display = 'none';
+        response.remove();
+        data = {};
+        names = [];
         new_form.remove();
     })
 };
@@ -82,16 +98,16 @@ const createData = async (form)=>{
         names.push(values[i].value);
     }
     //randomize 3 times, because we want to ensure randomness
-    console.log(names);
+
     randomizeData();
-    console.log(names);
     randomizeData();
-    console.log(names);
     randomizeData();
+    
     addPartners();
-    console.log(names);
-    console.log(data);
-    await postInfo();
+
+    const response = await postInfo();
+    const value = await response.status;
+    return Number(value);
 };
 
 //Fisher yates algorithm / Knuth swapping algorithm
@@ -112,11 +128,12 @@ const addPartners = () => {
 
 const postInfo = async () => {
     const jsonData = JSON.stringify(data);
-    fetch('/email', {
+    const response = await fetch('/email', {
         method: 'POST',
         headers: {
             'Content-Type':'application/json',
         },
         body: jsonData
     })
+    return response;
 }

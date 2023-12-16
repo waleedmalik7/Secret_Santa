@@ -22,26 +22,33 @@ app.get('/', (req,res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.post('/email', (req,res) => {
-    const data = req.body;
-    for (const person in data) {
-        const { email, partner } = data[person];
+app.post('/email', async (req,res) => {
+    try{
+        const data = req.body;
+        for (const person in data) {
+            const { email, partner } = data[person];
 
-        const mailOptions = {
-            from: 'automatedemailwaffleed@gmail.com',
-            to: email,
-            subject: 'Secret Santa Partner',
-            text: `Hi! You have the following person for Secret Santa: ${partner}`,
-        };
-        console.log(mailOptions);
-    
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-              return console.error('Error:', error);
-            }
+            const mailOptions = {
+                from: 'automatedemailwaffleed@gmail.com',
+                to: email,
+                subject: 'Secret Santa Partner',
+                text: `Hi! You have the following person for Secret Santa: ${partner}`,
+            };
+
+            console.log(mailOptions);
+        
+            const info = await transporter.sendMail(mailOptions);
             console.log('Email sent:', info.response);
-        });
-    };
+        }
+
+        res.status(200).send();
+        
+    }catch(error){
+        console.log('Error: ', error);
+        res.status(500).send();
+    }
+    
+    
 });
 
 app.listen(port, () => {
